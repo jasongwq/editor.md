@@ -6,70 +6,76 @@
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="../css/editormd.css" />
         <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+        <script type="text/javascript">
+
+        </script>
     </head>
     <body>
         <div id="layout">
             <header>
-                <h1>Simple example</h1>
+                <h1>example</h1>
             </header>
+            <div class="btns">
+                <button id="get-md-btn">Get Markdown</button>
+                <button id="get-html-btn">Get HTML</button>
+            </div>
             <div id="test-editormd">
-                <textarea style="display:none;">[TOC]
-
-#### Disabled options
-
-- TeX (Based on KaTeX);
-- Emoji;
-- Task lists;
-- HTML tags decode;
-- Flowchart and Sequence Diagram;
-
-#### Editor.md directory
-
-    editor.md/
-            lib/
-            css/
-            scss/
-            tests/
-            fonts/
-            images/
-            plugins/
-            examples/
-            languages/     
-            editormd.js
-            ...
-
-```html
-&lt;!-- English --&gt;
-&lt;script src="../dist/js/languages/en.js"&gt;&lt;/script&gt;
-
-&lt;!-- 繁體中文 --&gt;
-&lt;script src="../dist/js/languages/zh-tw.js"&gt;&lt;/script&gt;
-```
-</textarea>
+                <textarea style="display:none;"></textarea>
             </div>
         </div>
         <script src="js/jquery.min.js"></script>
         <script src="../editormd.min.js"></script>
         <script type="text/javascript">
 			var testEditor;
-
             $(function() {
                 testEditor = editormd("test-editormd", {
                     width   : "90%",
                     height  : 640,
                     syncScrolling : "single",
-                    path    : "../lib/"
+                    path    : "../lib/",
+                    saveHTMLToTextarea: true,
+                    // disabledKeyMaps:[],
+                    onload : function() {
+                        var keyMap = {
+                            "Ctrl-S": function(cm) {
+                                localStorage.mdtext=testEditor.getMarkdown();
+                                var time=new Date();
+                                localStorage.mdtime=time.getTime();
+                                localStorage.mdhtml=testEditor.getHTML();
+
+                            },
+                            "Esc": function(cm) {
+                                alert("Esc");
+                            },
+                            "Ctrl-A": function(cm) { // default Ctrl-A selectAll
+                                cm.execCommand("selectAll");
+                            }
+                        };
+                        // setting signle key
+                        var keyMap2 = {
+                              "Ctrl-T": function(cm) {
+                                alert("Ctrl+T");
+                              }
+                        };
+                        this.addKeyMap(keyMap);
+                        testEditor.setMarkdown(localStorage.mdtext);
+                        // this.addKeyMap(keyMap2);
+                        // this.removeKeyMap(keyMap2);  // remove signle key
+                    }
+                });
+                $("#get-md-btn").bind('click', function(){
+                    alert(testEditor.getMarkdown());
+                    localStorage.mdtext=testEditor.getMarkdown();
                 });
                 
-                /*
-                // or
-                testEditor = editormd({
-                    id      : "test-editormd",
-                    width   : "90%",
-                    height  : 640,
-                    path    : "../lib/"
-                });
-                */
+                $("#get-html-btn").bind('click', function() {
+                    var w = window.open();
+                    w.document.open();
+                    w.document.write(testEditor.getHTML());
+                    w.document.close();
+                    var h=testEditor.getHTML();
+                    alert(testEditor.getHTML());
+                });    
             });
         </script>
     </body>

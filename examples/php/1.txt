@@ -1,0 +1,2 @@
+
+C:\wamp64\www\editor.md\examples\php>wkhtmltopdf.exe --disable-smart-shrinking --page-height 2373 --page-width 200 http://md.com/examples/html-preview-markdown-to-html.html a.pdf 

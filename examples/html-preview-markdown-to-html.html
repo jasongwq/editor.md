@@ -5,7 +5,6 @@
         <title>HTML Preview(markdown to html) - Editor.md examples</title>
         <link rel="stylesheet" href="css/style.css" />
         <link rel="stylesheet" href="../css/editormd.preview.css" />
-        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
         <style>            
             .editormd-html-preview {
                 width: 90%;
@@ -16,70 +15,10 @@
     <body>
         <div id="layout">
             <header>
-                <h1>Markdown转HTML的显示处理</h1> 
-                <p>即：非编辑情况下的HTML预览</p>
-                <p>HTML Preview(markdown to html)</p>       
+                <h1>Markdown转HTML的显示处理</h1>  
             </header>
-            <div class="btns">
-                <button onclick="location.href='./html-preview-markdown-to-html-custom-toc-container.html';">将 ToC 移到自定义容器层</button>
-            </div>
-            <div id="test-editormd-view">
-               <textarea style="display:none;" name="test-editormd-markdown-doc">###Hello world!</textarea>               
-            </div>
-            <div id="test-editormd-view2">
-                <textarea id="append-test" style="display:none;">
-
-###科学公式 TeX(KaTeX)
-                    
-$$E=mc^2$$
-
-行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
-
-$$\(\sqrt{3x-1}+(1+x)^2\)$$
-                    
-$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
-
-$$X^2 > Y$$
-
-#####上标和下标
-
-上标：X&lt;sup&gt;2&lt;/sup&gt;
-
-下标：O&lt;sub&gt;2&lt;/sub&gt;
-
-##### 代码块里包含的过滤标签及属性不会被过滤
-
-```html
-&lt;style type="text/style"&gt;
-body{background:red;}
-&lt;/style&gt;
-
-&lt;script type="text/javscript"&gt;
-alert("script");
-&lt;/script&gt;
-
-&lt;iframe height=498 width=510 src="http://player.youku.com/embed/XMzA0MzIwMDgw" frameborder=0 allowfullscreen&gt;&lt;/iframe&gt;
-```
-
-#####Style
-
-&lt;style&gt;
-body{background:red;}
-&lt;/style&gt;
-
-&lt;style type="text/style"&gt;
-body{background:red;}
-&lt;/style&gt;
-
-#####Script
-
-&lt;script&gt;
-alert("script");
-&lt;/script&gt;
-
-&lt;script type="text/javscript"&gt;
-alert("script");
-&lt;/script&gt;</textarea>          
+            <button id="get-html-btn">Get HTML</button>
+            <div id="test-editormd-view">        
             </div>
         </div>
         <!-- <script src="js/zepto.min.js"></script>
@@ -98,10 +37,11 @@ alert("script");
 
         <script src="../editormd.js"></script>
         <script type="text/javascript">
+        var pixelsToMm=3.78;
             $(function() {
-                var testEditormdView, testEditormdView2;
+                var testEditormdView;
                 
-                $.get("test.md", function(markdown) {
+                $.get("test2.md", function(markdown) {
                     
 				    testEditormdView = editormd.markdownToHTML("test-editormd-view", {
                         markdown        : markdown ,//+ "\r\n" + $("#append-test").text(),
@@ -109,34 +49,35 @@ alert("script");
                         htmlDecode      : "style,script,iframe",  // you can filter tags decode
                         //toc             : false,
                         tocm            : true,    // Using [TOCM]
-                        //tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
-                        //gfm             : false,
-                        //tocDropdown     : true,
-                        // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
-                        emoji           : true,
+                        emoji           : false,
                         taskList        : true,
-                        tex             : true,  // 默认不解析
+                        tex             : false,  // 默认不解析
                         flowChart       : true,  // 默认不解析
-                        sequenceDiagram : true,  // 默认不解析
-                    });
-                    
-                    //console.log("返回一个 jQuery 实例 =>", testEditormdView);
-                    
-                    // 获取Markdown源码
-                    //console.log(testEditormdView.getMarkdown());
-                    
-                    //alert(testEditormdView.getMarkdown());
+                        sequenceDiagram : false,  // 默认不解析
+                        width : 200,
+                                            //matchWordHighlight : "onselected",
+                    path   : '../lib/',
+                    onload : function() {
+                        //this.watch();
+                        //this.setMarkdown("###test onloaded");
+                        //testEditor.setMarkdown("###Test onloaded");
+                        alert("onloaded");
+                        console.log("onloaded =>", this, this.id, this.settings);
+                    }
+                        });
                 });
-                    
-                testEditormdView2 = editormd.markdownToHTML("test-editormd-view2", {
-                    htmlDecode      : "style,script,iframe",  // you can filter tags decode
-                    emoji           : true,
-                    taskList        : true,
-                    tex             : true,  // 默认不解析
-                    flowChart       : true,  // 默认不解析
-                    sequenceDiagram : true,  // 默认不解析
+                $("#get-html-btn").bind('click', function() {
+                    var pixelsToMm=3.78;
+                    alert(document.body.scrollHeight/pixelsToMm+20);
+                    alert(document.body.scrollWidth/pixelsToMm+20);
                 });
+
+
             });
+
+        </script>
+        <script type="text/javascript">
+
         </script>
     </body>
 </html>

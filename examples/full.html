@@ -125,8 +125,6 @@
             var testEditor;
             
             $(function() {
-                
-                $.get('test.md', function(md){
                     testEditor = editormd("test-editormd", {
                         width: "90%",
                         height: 740,
@@ -188,6 +186,11 @@
                 });
                 
                 $("#get-html-btn").bind('click', function() {
+                    var w = window.open();
+                    w.document.open();
+                    w.document.write(testEditor.getHTML());
+                    w.document.close();
+                    var h=testEditor.getHTML();
                     alert(testEditor.getHTML());
                 });                
                 
@@ -225,7 +228,6 @@
                 $("#toc-default-btn").click(function() {
                     testEditor.config("tocDropdown", false);
                 });
-            });
         </script>
     </body>
 </html>
